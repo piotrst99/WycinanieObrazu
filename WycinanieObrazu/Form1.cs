@@ -48,6 +48,7 @@ namespace WycinanieObrazu
             //pictureBox1.Image 
             //bitmap = new Bitmap("sciezka");
             pictureBox1.Image = (Image)bitmap;
+
         }
 
         private void pictureBox1_MouseClick(object sender, MouseEventArgs e) {
