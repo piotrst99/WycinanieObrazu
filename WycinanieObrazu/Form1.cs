@@ -16,6 +16,8 @@ namespace WycinanieObrazu
         private bool click1 = false, click2 = false;
         private Tuple<int, int> cord1, cord2;
 
+        private int widthImage = 1, heigthImage = 1;
+
         public Form1() {
             InitializeComponent();
         }
@@ -25,7 +27,7 @@ namespace WycinanieObrazu
             int height = cord2.Item2 - cord1.Item2 + 1;
 
             Bitmap bitmap = new Bitmap(width, height);
-            Bitmap bitmap2 = new Bitmap(500, 500);
+            Bitmap bitmap2 = new Bitmap(widthImage, heigthImage);
 
             /*for (int i = cord1.Item1; i <= cord2.Item1; ++i) {
                 for (int j = cord1.Item2; j <= cord2.Item2; ++j) {
@@ -35,9 +37,11 @@ namespace WycinanieObrazu
                     bitmap.SetPixel(i - cord1.Item1, j - cord2.Item1, c);
                 }
             }*/
-
-            for (int i = 0; i < 500; ++i) {
-                for (int j = 0; j < 500; ++j) {
+            
+            //MessageBox.Show(pictureBox1.Size.Width.ToString());
+            
+            for (int i = 0; i < widthImage; ++i) {
+                for (int j = 0; j < heigthImage; ++j) {
                     if ((i >= cord1.Item1 && i <= cord2.Item1) && (j >= cord1.Item2 && j <= cord2.Item2)) {
                         //bitmap.SetPixel(i, j, Color.FromArgb(pictureBox1.BackColor.R, pictureBox1.BackColor.G, pictureBox1.BackColor.B));
                         Color c = ((Bitmap)pictureBox1.Image).GetPixel(i, j);
@@ -71,6 +75,8 @@ namespace WycinanieObrazu
             openDialog.Multiselect = false;
             if (openDialog.ShowDialog() == DialogResult.OK) {
                 bitmap = new Bitmap(openDialog.FileName);
+                widthImage = bitmap.Width;
+                heigthImage = bitmap.Height;
                 pictureBox1.Image = (Image)bitmap;
             }
         }
@@ -83,13 +89,14 @@ namespace WycinanieObrazu
             }*/
             pictureBox1.BackColor = Color.FromArgb(100,200,124);
 
-            Bitmap bitmap = new Bitmap(500,500);
+            Bitmap bitmap = new Bitmap(400,400);
 
             Random r = new Random();
 
-            for(int i=0; i<500; ++i) {
-                for(int j=0; j<500; ++j) {
-                    bitmap.SetPixel(i,j,Color.FromArgb(r.Next(0,255), r.Next(0, 255), r.Next(0, 255)));
+            for(int i=0; i<400; ++i) {
+                for(int j=0; j<400; ++j) {
+                    //bitmap.SetPixel(i,j,Color.FromArgb(r.Next(0,255), r.Next(0, 255), r.Next(0, 255)));
+                    bitmap.SetPixel(i,j,Color.FromArgb(255,255,255));
                 }
             }
 
@@ -122,7 +129,7 @@ namespace WycinanieObrazu
             }
             
             if(click1 && click2) {
-                Bitmap bitmap = new Bitmap(500, 500);
+                Bitmap bitmap = new Bitmap(widthImage, heigthImage);
                 Random r = new Random();
                 //Bitmap bitmap = new Bitmap(Math.Abs(cord2.Item1 - cord1.Item1 + 1), Math.Abs(cord2.Item2 - cord1.Item2 + 1));
                 /*for (int i=cord1.Item1; i<cord2.Item1; ++i) {
@@ -136,8 +143,8 @@ namespace WycinanieObrazu
                 //pictureBox1.DrawToBitmap(bitmap, pictureBox1.ClientRectangle);
                 //Color color = bitmap.GetPixel(x)
 
-                for (int i = 0; i < 500; ++i) {
-                    for (int j = 0; j < 500; ++j) {
+                for (int i = 0; i < widthImage; ++i) {
+                    for (int j = 0; j < heigthImage; ++j) {
                         if((i>=cord1.Item1 && i<= cord2.Item1) && (j>=cord1.Item2 && j <= cord2.Item2)) {
                             //bitmap.SetPixel(i, j, Color.FromArgb(pictureBox1.BackColor.R, pictureBox1.BackColor.G, pictureBox1.BackColor.B));
                             Color c = ((Bitmap)pictureBox1.Image).GetPixel(i, j);
