@@ -76,6 +76,14 @@ namespace WycinanieObrazu
             ResetImage();
         }
 
+        private void pictureBox1_MouseEnter(object sender, EventArgs e) {
+            pictureBox1.Cursor = System.Windows.Forms.Cursors.Cross;
+        }
+
+        private void pictureBox1_MouseLeave(object sender, EventArgs e) {
+            this.pictureBox1.Cursor = System.Windows.Forms.Cursors.Default;
+        }
+
         private void Form1_Load(object sender, EventArgs e) {
             pictureBox1.BackColor = Color.FromArgb(100,200,124);
 
