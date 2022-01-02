@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -29,72 +30,35 @@ namespace WycinanieObrazu
             Bitmap bitmap = new Bitmap(width+1, height+1);
             Bitmap bitmap2 = new Bitmap(widthImage, heigthImage);
 
-            /*for (int i = cord1.Item1; i <= cord2.Item1; ++i) {
-                for (int j = cord1.Item2; j <= cord2.Item2; ++j) {
-                    //MessageBox.Show(i.ToString()+" "+j.ToString());
-                    MessageBox.Show((i - cord1.Item1).ToString()+" "+height.ToString());
-                    Color c = ((Bitmap)pictureBox2.Image).GetPixel(i, j);
-                    bitmap.SetPixel(i - cord1.Item1, j - cord2.Item1, c);
-                }
-            }*/
-
-            //MessageBox.Show(cord1.Item1.ToString() + " " + cord2.Item1.ToString()+"\n"+cord1.Item2.ToString() + " " + cord2.Item2.ToString()+"\n"+ width.ToString() + " " + height.ToString());
-            //MessageBox.Show(width.ToString() + " " + height.ToString());
-            
-            /*for (int i = 0; i < widthImage; ++i) {
-                for (int j = 0; j < heigthImage; ++j) {
-                    if ((i >= cord1.Item1 && i <= cord2.Item1) && (j >= cord1.Item2 && j <= cord2.Item2)) {
-                        //bitmap.SetPixel(i, j, Color.FromArgb(pictureBox1.BackColor.R, pictureBox1.BackColor.G, pictureBox1.BackColor.B));
-                        Color c = ((Bitmap)pictureBox1.Image).GetPixel(i, j);
-                        bitmap2.SetPixel(i, j, c);
-                        //bitmap.SetPixel(i, j, Color.FromArgb(r.Next(0, 255), r.Next(0, 255), r.Next(0, 255)));
-                    }
-                    else {
-                        bitmap2.SetPixel(i, j, Color.FromArgb(0, 1, 1, 1));
-
-                    }
-                }
-            }*/
-
-            /////////
-            ///
-
             for (int i = cord1.Item1; i <= cord2.Item1; ++i) {
                 for (int j = cord1.Item2; j <= cord2.Item2; ++j) {
-                    /*if ((i >= cord1.Item1 && i <= cord2.Item1) && (j >= cord1.Item2 && j <= cord2.Item2)) {
-                        //bitmap.SetPixel(i, j, Color.FromArgb(pictureBox1.BackColor.R, pictureBox1.BackColor.G, pictureBox1.BackColor.B));
-                        Color c = ((Bitmap)pictureBox1.Image).GetPixel(i, j);
-                        bitmap2.SetPixel(i, j, c);
-                        //bitmap.SetPixel(i, j, Color.FromArgb(r.Next(0, 255), r.Next(0, 255), r.Next(0, 255)));
-                    }
-                    else {
-                        bitmap2.SetPixel(i, j, Color.FromArgb(0, 1, 1, 1));
-
-                    }*/
-
                     Color c = ((Bitmap)pictureBox1.Image).GetPixel(i, j);
-                    //MessageBox.Show(i.ToString() + " " + j.ToString());
-                    //MessageBox.Show((i - cord1.Item1).ToString() + " " + (j - cord1.Item2).ToString());
                     bitmap.SetPixel(i-cord1.Item1, j-cord1.Item2, c);
-                    
                 }
             }
 
-
-
-            /////////////////
-
             try {
                 SaveFileDialog saveFileDialog = new SaveFileDialog();
+                saveFileDialog.Filter = "PNG|*.png";
                 if(saveFileDialog.ShowDialog() == DialogResult.OK) {
-                    //bitmap2.Save("..\\WycinanieObrazu\\WycinanieObrazu\\Obrazy\\obraz2.jpg");
-                    bitmap.Save(saveFileDialog.FileName);
-                    //File.WriteAllBytes(saveFileDialog.FileName, );
+                    bitmap.Save(saveFileDialog.FileName, ImageFormat.Png);
                 }
             }
             catch (Exception) {
                 MessageBox.Show("Wystąpił bląd");
             }
+        }
+
+        private void resetButton_Click(object sender, EventArgs e) {
+            ResetImage();
+        }
+
+        private void deleteBtn_Click(object sender, EventArgs e) {
+            Bitmap bitmap = new Bitmap(1, 1);
+            bitmap.SetPixel(0, 0, Color.FromArgb(255, 255, 255));
+            pictureBox1.Image = bitmap;
+            pictureBox2.Image = bitmap;
+            ResetImage();
         }
 
         private void getFileButton_Click(object sender, EventArgs e) {
@@ -108,26 +72,15 @@ namespace WycinanieObrazu
                 heigthImage = bitmap.Height;
                 pictureBox1.Image = (Image)bitmap;
             }
+
+            ResetImage();
         }
 
         private void Form1_Load(object sender, EventArgs e) {
-            /*for(int i=0; i<100; ++i) {
-                for(int j=0; j<100; ++j) {
-                    pictureBox1.BackColor = Color.FromArgb(100,200,124);
-                }
-            }*/
             pictureBox1.BackColor = Color.FromArgb(100,200,124);
 
-            Bitmap bitmap = new Bitmap(400,400);
-
-            Random r = new Random();
-
-            for(int i=0; i<400; ++i) {
-                for(int j=0; j<400; ++j) {
-                    //bitmap.SetPixel(i,j,Color.FromArgb(r.Next(0,255), r.Next(0, 255), r.Next(0, 255)));
-                    bitmap.SetPixel(i,j,Color.FromArgb(255,255,255));
-                }
-            }
+            Bitmap bitmap = new Bitmap(1,1);
+            bitmap.SetPixel(0, 0, Color.FromArgb(255, 255, 255));
 
             panel1.AutoScroll = true;
             pictureBox1.Image = bitmap;
@@ -136,22 +89,17 @@ namespace WycinanieObrazu
             pictureBox2.SizeMode = PictureBoxSizeMode.AutoSize;
 
             pictureBox2.Hide();
-
-            //pictureBox1.Image 
-            //bitmap = new Bitmap("..\\WycinanieObrazu\\WycinanieObrazu\\Obrazy\\obraz.jpg");
-            //pictureBox1.Image = (Image)bitmap;
-
         }
 
         private void pictureBox1_MouseClick(object sender, MouseEventArgs e) {
             if (e.Button == MouseButtons.Left) {
                 if (!click1) {
-                    label3.Text = e.X.ToString() + " " + e.Y.ToString();
+                    //label3.Text = e.X.ToString() + " " + e.Y.ToString();
                     cord1 = new Tuple<int, int>(e.X, e.Y);
                     click1 = true;
                 }
                 else if (!click2) {
-                    label4.Text = e.X.ToString() + " " + e.Y.ToString();
+                    //label4.Text = e.X.ToString() + " " + e.Y.ToString();
                     cord2 = new Tuple<int, int>(e.X, e.Y);
                     click2 = true;
                 }
@@ -160,25 +108,12 @@ namespace WycinanieObrazu
             if(click1 && click2) {
                 Bitmap bitmap = new Bitmap(widthImage, heigthImage);
                 Random r = new Random();
-                //Bitmap bitmap = new Bitmap(Math.Abs(cord2.Item1 - cord1.Item1 + 1), Math.Abs(cord2.Item2 - cord1.Item2 + 1));
-                /*for (int i=cord1.Item1; i<cord2.Item1; ++i) {
-                    for(int j=cord1.Item2; j<cord2.Item2; ++j) {
-                        //bitmap.SetPixel(i, j, Color.FromArgb(r.Next(0, 255), r.Next(0, 255), r.Next(0, 255)));
-                        //pictureBox1.                
-                        
-                    }
-                }*/
-
-                //pictureBox1.DrawToBitmap(bitmap, pictureBox1.ClientRectangle);
-                //Color color = bitmap.GetPixel(x)
 
                 for (int i = 0; i < widthImage; ++i) {
                     for (int j = 0; j < heigthImage; ++j) {
                         if((i>=cord1.Item1 && i<= cord2.Item1) && (j>=cord1.Item2 && j <= cord2.Item2)) {
-                            //bitmap.SetPixel(i, j, Color.FromArgb(pictureBox1.BackColor.R, pictureBox1.BackColor.G, pictureBox1.BackColor.B));
                             Color c = ((Bitmap)pictureBox1.Image).GetPixel(i, j);
                             bitmap.SetPixel(i, j, c);
-                            //bitmap.SetPixel(i, j, Color.FromArgb(r.Next(0, 255), r.Next(0, 255), r.Next(0, 255)));
                         }
                         else {
                             bitmap.SetPixel(i, j, Color.FromArgb(1, 1, 1));
@@ -186,29 +121,25 @@ namespace WycinanieObrazu
                         }
                     }
                 }
-                //bitmap.MakeTransparent();
 
                 pictureBox2.Image = bitmap;
                 pictureBox2.Show();
                 pictureBox1.Hide();
-                //pictureBox1.SizeMode = PictureBoxSizeMode.AutoSize;
 
 
             }
 
         }
 
-        /*private void pictureBox1_Click(object sender, MouseEventArgs e) {
-            label3.Text = "Clicked";
-            //label3.Text = pictureBox1.Location.X.ToString() + " " + pictureBox1.Location.Y.ToString();
-            if (e.Button == MouseButtons.Left) {
-                label3.Text = e.X.ToString() + " " + e.Y.ToString();
-                //label4.Text = panel1.Width.ToString();
-            }
-                //label3.Text = pictureBox1.ClientRectangle.Width.ToString() + " " + pictureBox1.ClientRectangle.Height.ToString();
-        }*/
-
+        private void ResetImage() {
+            Bitmap bitmapClear = new Bitmap(1, 1);
+            bitmapClear.SetPixel(0, 0, Color.FromArgb(255, 255, 255));
+            pictureBox2.Image = bitmapClear;
+            pictureBox2.Hide();
+            pictureBox1.Show();
+            click1 = false;
+            click2 = false;
+        }
 
     }
-
 }
